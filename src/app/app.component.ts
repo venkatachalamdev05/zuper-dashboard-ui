@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
@@ -11,13 +12,13 @@ export class AppComponent {
   isSidebarOpen = false;
 
   textElements = [
-    { name: 'Single Line Text', type: 'text', description: 'Single text area' },
-    { name: 'Multi Line Text', type: 'textarea', description: 'Multi text area' },
-    { name: 'Integer', type: 'number', description: 'Integer type area' },
-    { name: 'Date', type: 'date', description: 'Select date from datepicker' },
-    { name: 'Time', type: 'time', description: 'Select date from timepicker' },
-    { name: 'Media', type: 'file', description: 'Upload documentation files' },
-    { name: 'Dropdown', type: 'dropdown', options: ['Option 1', 'Option 2', 'Option 3'], description: 'select options from dropdown' }]
+    { name: 'Single Line Text', type: 'text' },
+    { name: 'Multi Line Text', type: 'textarea' },
+    { name: 'Integer', type: 'number' },
+    { name: 'Date', type: 'date' },
+    { name: 'Time', type: 'time' },
+    { name: 'Email', type: 'email' },
+  ];
 
   items: any[] = [];
 
@@ -25,29 +26,17 @@ export class AppComponent {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
-  editDropdown(item: any) {
-    item.isEditing = true;
-  }
-
-  addOption(item: any) {
-    item.options.push(`Option ${item.options.length + 1}`);
-  }
-
-  removeOption(item: any, index: number) {
-    item.options.splice(index, 1);
-  }
-
-
   drop(event: CdkDragDrop<any[]>) {
-    this.items.splice(event.currentIndex, 0, {
-      ...event.previousContainer.data[event.previousIndex],
-      id: Date.now(),
-      isEditing: false,
-      options: event.previousContainer.data[event.previousIndex].options ?
-        [...event.previousContainer.data[event.previousIndex].options] : []
-    });
+    if (event.previousContainer === event.container) {
+      moveItemInArray(this.items, event.previousIndex, event.currentIndex);
+    } else {
+      this.items.splice(event.currentIndex, 0, {
+        ...event.previousContainer.data[event.previousIndex],
+        id: Date.now(),
+        isEditing: false
+      });
+    }
   }
-
 
   editHeader(item: any) {
     item.isEditing = true;
@@ -62,11 +51,11 @@ export class AppComponent {
   }
 
   searchQuery = '';
-  filteredElements = [...this.textElements];
+  filteredElements = [...this.textElements]; // Initially, show all elements
 
   filterElements() {
     if (this.searchQuery.trim() === '') {
-      this.filteredElements = [...this.textElements];
+      this.filteredElements = [...this.textElements]; // Reset to all elements if no search query
     } else {
       this.filteredElements = this.textElements.filter((element) =>
         element.name.toLowerCase().includes(this.searchQuery.toLowerCase())
