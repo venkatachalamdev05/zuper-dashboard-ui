@@ -1,0 +1,10 @@
+<div class=" p-4 bg-white shadow-lg min-h-screen">
+  <h2 class="text-lg font-semibold mb-4">Headers</h2>
+  <div cdkDropList #headersList="cdkDropList" id="headersList" [cdkDropListData]="formHeaders"
+    [cdkDropListConnectedTo]="['dropList']" class="space-y-2">
+    <div *ngFor="let header of formHeaders" cdkDrag
+      class="p-3 bg-gray-300 text-black rounded-lg shadow-md cursor-move">
+      {{ header.name }}
+    </div>
+  </div>
+</div>

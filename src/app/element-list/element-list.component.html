@@ -1,0 +1,22 @@
+<div class="p-4 bg-white shadow-lg min-h-screen">
+  <h2 class="text-lg font-semibold mb-4">Elements</h2>
+
+  <div class="mb-4">
+    <input type="text" [(ngModel)]="searchQuery" (input)="filterElements()" placeholder="Search elements..."
+      class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+  </div>
+
+  <div cdkDropList #elementsList="cdkDropList" id="elementsList" [cdkDropListData]="filteredElements"
+    [cdkDropListConnectedTo]="['dropList']" class="space-y-2">
+    <div *ngFor="let element of filteredElements" cdkDrag
+      class="p-3 bg-gray-300 text-black rounded-lg shadow-md cursor-copy">
+      <div class="flex">
+        <div class="logo"></div>
+        <div>
+          <p> {{ element.name }}</p>
+          <p class="text-xs"> {{ element.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

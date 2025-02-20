@@ -1,123 +1,13 @@
 <div class="flex min-h-screen bg-gray-100 overflow-hidden">
-  <div class="flex-1 p-4 middle-pane">
-    <div
-      cdkDropList #dropList="cdkDropList"
-      id="dropList"
-      [cdkDropListData]="items"
-      [cdkDropListConnectedTo]="['elementsList']"
-      (cdkDropListDropped)="drop($event)"
-      class="space-y-2 p-4 bg-white shadow-lg rounded-lg min-h-[200px] border-2 border-dashed max-h-[80vh] overflow-y-auto"
-    >
-      <div
-        *ngFor="let item of items; let i = index"
-        cdkDrag
-        class="p-3 bg-gray-200 rounded-lg shadow-md flex items-center justify-between"
-      >
-        <div class="flex items-center space-x-2 w-full">
-          <div cdkDragHandle class="text-gray-600">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <circle cx="12" cy="4" r="2"></circle>
-              <circle cx="12" cy="12" r="2"></circle>
-              <circle cx="12" cy="20" r="2"></circle>
-            </svg>
-          </div>
-
-          <div class="flex-1 flex flex-col">
-            <div class="flex-1 flex items-center space-x-2">
-              <!-- Editable Field -->
-              <input
-                *ngIf="item.isEditing"
-                type="text"
-                [(ngModel)]="item.name"
-                (blur)="saveHeader(item)"
-                (keyup.enter)="saveHeader(item)"
-                class="w-full p-1 border rounded focus:outline-none"
-              />
-              <div *ngIf="!item.isEditing" class="text-gray-700 font-medium">
-                {{ item.name }}
-              </div>
-
-              <!-- Always Visible Buttons -->
-              <button (click)="editHeader(item)" class="text-gray">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 20h9"></path>
-                  <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"></path>
-                </svg>
-              </button>
-
-              <button (click)="removeItem(i)" class="text-black hover:text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path>
-                  <path d="M10 11l0 6"></path>
-                  <path d="M14 11l0 6"></path>
-                </svg>
-              </button>
-            </div>
-
-
-
-            <!-- Input Fields Below -->
-            <input *ngIf="item.type === 'text'" type="text" placeholder="Enter text"
-              class="w-full p-2 mt-1 border rounded">
-
-            <input *ngIf="item.type === 'email'" type="email" placeholder="Enter email"
-              class="w-full p-2 mt-1 border rounded">
-
-            <textarea *ngIf="item.type === 'textarea'" placeholder="Enter details"
-              class="w-full p-2 mt-1 border rounded"></textarea>
-
-            <input *ngIf="item.type === 'number'" type="number" placeholder="Enter number"
-              class="w-full p-2 mt-1 border rounded">
-
-            <input *ngIf="item.type === 'date'" type="date" class="w-full p-2 mt-1 border rounded">
-
-            <input *ngIf="item.type === 'time'" type="time" class="w-full p-2 mt-1 border rounded">
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="w-1/5">
+    <app-header [formHeaders]="formHeaders"></app-header>
   </div>
 
-  <div
-    class="sidebar fixed top-0 right-0 w-64 h-full bg-white shadow-lg p-4 transform transition-transform duration-300 max-h-screen overflow-y-auto translate-x-0"
-    *ngIf="isSidebarOpen"
-  >
-    <button (click)="toggleSidebar()" class="absolute top-2 right-2 text-gray-600">✖</button>
-    <h2 class="text-lg font-semibold mb-4">Elements</h2>
-
-    <input
-      type="text"
-      [(ngModel)]="searchQuery"
-      (input)="filterElements()"
-      placeholder="Search Elements"
-      class="w-full p-2 mb-4 border rounded-md focus:outline-none"
-    />
-
-    <div
-      cdkDropList #elementsList="cdkDropList"
-      id="elementsList"
-      [cdkDropListData]="filteredElements"
-      [cdkDropListConnectedTo]="['dropList']"
-      class="space-y-2"
-    >
-      <div *ngFor="let element of filteredElements" cdkDrag
-        class="p-3 bg-gray-300 text-black rounded-lg shadow-md cursor-move flex items-center space-x-2"
-      >
-        <!-- Gray Square Before Sidebar Name -->
-        <div class="w-4 h-4 bg-gray-400 rounded-sm"></div>
-        <div>{{ element.name }}</div>
-      </div>
-    </div>
+  <div class="flex-1">
+    <app-form-builder [items]="items"></app-form-builder>
   </div>
 
-  <button
-    (click)="toggleSidebar()"
-    class="fixed top-4 right-4 p-2 bg-blue-600 text-white rounded-lg shadow-lg"
-  >
-     Elements
-  </button>
+  <div class="w-1/5">
+    <app-element-list [filteredElements]="filteredElements"></app-element-list>
+  </div>
 </div>
